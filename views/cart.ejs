@@ -1,0 +1,111 @@
+<%- include('./partials/header') %>
+
+<% if (success.length > 0) { %>
+    <div class="absolute top-5 left-1/2 transform -translate-x-1/2 p-3 rounded-md bg-green-600 shadow-md">
+        <span class="text-white font-medium"><%= success %></span>
+    </div>
+<% } %>
+
+<div class="w-full h-screen flex items-start bg-gray-100 px-20 py-20 gap-10">
+    <!-- Product Card -->
+    <% if (user.cart && user.cart.length > 0) { %>
+        <!-- Dynamically Render Products from Cart -->
+        <div class="w-[40%] bg-white h-full rounded shadow-lg overflow-y-auto">
+            <% user.cart.forEach((product, index) => { %> 
+                <!-- Product Card -->
+                <div class="flex p-2 gap-5 h-40 border-b-4 bg-[<%= product.bgcolor%>]">
+                    <!-- Image Section with Responsive Sizing and No Image Cut -->
+                    <div class="w-1/3  relative overflow-hidden rounded-lg">
+                        <img class="w-full h-full object-contain transition-all duration-300 hover:scale-105" src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="<%= product.name %> Image">
+                    </div>
+                    <!-- Product Info Section -->
+                    <div class="w-2/3 flex flex-col justify-between">
+                        <!-- Background Color for Product Info -->
+                        <div class="bg-[<%= product.panelcolor %>] p-2 rounded-lg text-white">
+                            <h3 class="text-base font-semibold text-white truncate"><%= product.name %></h3>
+                            <p class="text-xs text-white truncate"><%= product.description %></p>
+                        </div>
+                        
+                        <!-- Quantity and Price Section with Background Color on Price Panel -->
+                        <div class="flex items-center justify-between mt-2">
+                            <div class="flex items-center gap-2">
+                                <a href="/removefromcart/<%= product._id %>">
+                                    <button class="p-2 rounded-full bg-gray-200 text-gray-600">
+                                      <i class="ri-subtract-line"></i>
+                                    </button>
+                                  </a>
+                                <div class="px-4 py-1 bg-gray-200 rounded-full text-black">
+                                    01
+                                </div>
+                                <!-- <button class="p-2 rounded-full bg-gray-200 text-gray-600">
+                                    <i class="ri-add-line"></i>
+                                </button> -->
+                            </div>
+                            <div class="text-base font-semibold text-gray-900">
+                                Rs 
+                                <%= product.discount > 0 ? product.price - product.discount : product.price %>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+    <% } else { %>
+        <div class="w-[25%] rounded-md overflow-hidden">
+            <p class="text-center text-gray-600">No items in the cart.</p>
+        </div>
+    <% } %>
+
+    <!-- Price Breakdown -->
+    <div class="w-[40%] bg-white ml-auto rounded-lg shadow-lg p-6">
+        <h3 class="text-2xl font-semibold mb-4">Price Breakdown</h3>
+        <div class="space-y-3">
+            <!-- Total Price -->
+            <div class="flex justify-between">
+                <h4 class="text-lg">Total Price</h4>
+                <h4 class="text-lg">Rs 
+                    <%= user.cart.reduce((acc, product) => acc + product.price, 0) %>
+                </h4>
+            </div>
+
+            <!-- Discount on Price -->
+            <div class="flex justify-between">
+                <h4 class="text-lg">Discount on Price</h4>
+                <h4 class="text-lg">Rs 
+                    <%= user.cart.reduce((acc, product) => acc + product.discount, 0) %>
+                </h4>
+            </div>
+
+            <!-- Platform Fee -->
+            <div class="flex justify-between">
+                <h4 class="text-lg">Platform Fee</h4>
+                <h4 class="text-lg">Rs 20</h4>
+            </div>
+
+            <!-- Shipping Fee -->
+            <div class="flex justify-between">
+                <h4 class="text-lg">Shipping Fee</h4>
+                <h4 class="text-lg">FREE</h4>
+            </div>
+        </div>
+
+        <div class="w-full h-[1px] bg-gray-300 my-6"></div>
+
+        <div class="flex justify-between items-center mt-4">
+            <h3 class="text-2xl font-semibold">Total Amount</h3>
+            <h3 class="text-2xl font-semibold text-green-600">
+                Rs 
+                <%= user.cart.reduce((acc, product) => acc + product.price, 0) - user.cart.reduce((acc, product) => acc + product.discount, 0) + 20 %>
+            </h3>
+        </div>
+
+        <form action="" class="mt-6">
+            <!-- Add Checkout Button -->
+            <button class="w-full bg-green-600 text-white py-3 rounded-lg text-xl hover:bg-green-700 transition duration-300">
+                Proceed to Checkout
+            </button>
+        </form>
+    </div>
+</div>
+
+<%- include('./partials/footer') %>

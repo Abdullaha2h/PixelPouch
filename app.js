@@ -3,9 +3,15 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+const flash=require("connect-flash")
+const expressSession=require("express-session")
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const ownersRouter=require("./routes/ownersRouter")
+const usersRouter=require("./routes/usersRouter")
+const productsRouter=require("./routes/productsRouter")
+const index=require("./routes/index")
+
+const db=require('./config/mongoose-connection')
 
 var app = express();
 
@@ -13,14 +19,20 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
+require("dotenv").config()
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(expressSession({resave:false,saveUninitialized:false,secret:process.env.EXPRESS_SESSION_SECRET}))
+app.use(flash())
+app.use("/owners",ownersRouter);
+app.use("/users",usersRouter);
+app.use("/products",productsRouter);
+app.use('/', index);
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

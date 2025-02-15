@@ -1,0 +1,31 @@
+<%- include('partials/header') %>
+
+<div class="w-full max-w-3xl mx-auto p-6 pt-20 bg-white shadow-md rounded-md">
+    <h2 class="text-2xl font-semibold mb-4">My Account</h2>
+
+    <!-- User Info Form -->
+    <form action="/updateaccount" method="POST" class="space-y-4">
+        <!-- Name Field -->
+        <div class="flex flex-col">
+            <label for="name" class="text-lg font-medium">Full Name</label>
+            <input type="text" name="name" id="name" value="<%= user.name %>" class="p-2 rounded border border-gray-300" required />
+        </div>
+
+        <!-- Email Field (non-editable) -->
+        <div class="flex flex-col">
+            <label for="email" class="text-lg font-medium">Email</label>
+            <input type="email" name="email" id="email" value="<%= user.email %>" class="p-2 rounded border border-gray-300" disabled />
+        </div>
+
+        <!-- Password Field -->
+        <div class="flex flex-col">
+            <label for="password" class="text-lg font-medium">New Password (Optional)</label>
+            <input type="password" name="password" id="password" placeholder="Leave blank to keep current password" class="p-2 rounded border border-gray-300" />
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="w-full py-2 bg-blue-600 text-white font-semibold rounded-md">Update Account</button>
+    </form>
+
+
+</div>

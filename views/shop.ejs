@@ -1,0 +1,68 @@
+<%- include('./partials/header') %>
+
+<div class="w-full h-screen flex items-start px-8 py-16 bg-gray-50 overflow-hidden">
+
+    <% if (success.length > 0) { %>
+        <div class="absolute top-5 left-1/2 transform -translate-x-1/2 p-3 rounded-md bg-green-600 shadow-md">
+            <span class="text-white font-medium"><%= success %></span>
+        </div>
+    <% } %>
+
+    <!-- Sidebar -->
+    <div class="w-1/4 h-full flex flex-col items-start bg-white p-6 rounded-lg shadow-md text-gray-800">
+        <div class="flex items-center gap-2 mb-8">
+            <h3 class="text-lg font-semibold">Sort by</h3>
+            <form action="/shop">
+                <select class="border-[1px] px-3 py-2 rounded bg-gray-100 text-gray-800 hover:bg-gray-200 focus:ring-2 focus:ring-blue-500" name="sortby" id="">
+                    <option value="popular">Popular</option>
+                    <option value="newest">Newest</option>
+                </select>
+            </form>
+        </div>
+        <div class="flex flex-col gap-6 mb-12">
+            <a href="" class="flex items-center gap-3 text-base font-medium hover:text-blue-500">
+                <i class="ri-shopping-bag-line text-xl"></i>
+                <span>New Collection</span>
+            </a>
+            <a href="" class="flex items-center gap-3 text-base font-medium hover:text-blue-500">
+                <i class="ri-apps-line text-xl"></i>
+                <span>All Products</span>
+            </a>
+            <a href="" class="flex items-center gap-3 text-base font-medium hover:text-blue-500">
+                <i class="ri-price-tag-3-line text-xl"></i>
+                <span>Discounted Products</span>
+            </a>
+        </div>
+        <div class="mt-auto">
+            <p class="block mb-2 text-base text-gray-600 font-medium">Filter by:</p>
+            <a href="" class="block text-base hover:text-blue-500">Availability</a>
+            <a href="" class="block text-base hover:text-blue-500">Discount</a>
+        </div>
+    </div>
+
+    <!-- Product Grid -->
+    <div class="w-3/4 h-full overflow-y-auto flex flex-wrap gap-5 ml-8 rounded-lg bg-gray-200 p-8">
+        <% products.forEach(function(product){ %>
+        <div class="w-56 bg-white rounded-lg shadow-md overflow-hidden">
+            <div class="w-full h-40 flex items-center justify-center bg-[<%= product.bgcolor %>]">
+                <img class="h-32 object-contain" src="data:image/jpeg;base64,<%= product.image.toString('base64') %>" alt="Product Image">
+            </div>
+            <div class="flex justify-between items-center px-4 py-3 bg-[<%= product.panelcolor %>] text-[<%= product.textcolor %>]">
+                <div>
+                    <h3 class="font-medium text-sm">
+                        <%= product.name %>
+                    </h3>
+                    <h4 class="text-sm font-semibold">₨ <%= product.price %></h4>
+                </div>
+                <a class="w-8 h-8 flex items-center justify-center rounded-full bg-white text-blue-500 hover:bg-blue-500 hover:text-white" href="/addtocart/<%= product._id %>">
+                    <i class="ri-add-line text-lg"></i>
+                </a>
+            </div>
+        </div>
+        <% }) %>
+    </div>
+    
+</div>
+
+<%- include('./partials/footer') %>
+
